@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Lead Extractor Pro - Scrape B2B Leads & Emails</title>
+    <meta name="description" content="Extract unlimited business leads, verified emails, and phone numbers from Google Maps. Automate your B2B outreach with our high-performance Apify scraper.">
+    <meta name="keywords" content="google maps scraper, b2b lead generation, email extractor, apify actor, local business data, maps data extraction">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Google Maps Lead Extractor Pro">
+    <meta property="og:description" content="Programmatically Extract High-Intent B2B Leads from Google Maps at Scale.">
+    <meta property="og:image" content="/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Google Maps Lead Extractor Pro">
+    <meta name="twitter:description" content="Automate your local lead generation pipeline with enterprise-grade scraping.">
+    <meta name="twitter:image" content="/og-image.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Google Maps Lead Extractor Pro",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Cloud",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      },
+      "description": "Programmatically extract high-intent B2B leads from Google Maps at scale using intelligent proxy rotation."
+    }
+    </script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;500;600;700&display=swap">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom Theme Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'void-black': '#050505',
+                        'void-dark': '#0F120F',
+                        'toxic-green': '#39FF14',
+                        'pale-green': '#F0FDF4',
+                        'mute-green': '#86EFAC',
+                    },
+                    fontFamily: {
+                        'creepster': ['Creepster', 'display'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px #39FF14, 0 0 20px #39FF14',
+                        'neon-sm': '0 0 5px #39FF14',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #F0FDF4;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Creepster', display;
+            letter-spacing: 0.05em;
+        }
+
+        .neon-text {
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+        }
+
+        .btn-primary {
+            background-color: #39FF14;
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+        }
+
+        .btn-primary:hover {
+            background-color: #32d613;
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.8);
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #39FF14;
+            color: #39FF14;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(57, 255, 20, 0.1);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        }
+
+        .card-vibe {
+            background-color: rgba(15, 18, 15, 0.8);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card-vibe:hover {
+            border-color: rgba(57, 255, 20, 0.6);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #39FF14;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2cb310;
+        }
+    </style>
+<style>
+/* VibeCode Pager - Theme: Completely bonkers */
+:root {
+  --bg-primary: #050505;
+  --bg-secondary: #0F120F;
+  --text-primary: #F0FDF4;
+  --text-secondary: #86EFAC;
+  --accent: #39FF14;
+  --accent-hover: #32D713;
+}
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Creepster', display;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.section-padding {
+  padding: 5rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding: 6rem 2rem;
+  }
+}
+
+/* Waitlist form styling */
+#waitlist-form input[type="email"] {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--text-secondary);
+  color: var(--text-primary);
+}
+
+#waitlist-form input[type="email"]:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(94, 106, 210, 0.2);
+}
+
+/* VibeCode Pager badge */
+.vibecode-badge {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  z-index: 50;
+}
+
+.vibecode-badge:hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-void-black/90 backdrop-blur-md border-b border-toxic-green/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <i class="fa-solid fa-spider text-toxic-green text-3xl animate-pulse"></i>
+                    <span class="font-creepster text-2xl text-white tracking-widest neon-text">G-MAPS EXTRACTOR</span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#problem" class="text-gray-300 hover:text-toxic-green transition-colors font-medium">Pain Points</a>
+                    <a href="#features" class="text-gray-300 hover:text-toxic-green transition-colors font-medium">Features</a>
+                    <a href="#how-it-works" class="text-gray-300 hover:text-toxic-green transition-colors font-medium">How It Works</a>
+                    <a href="#faq" class="text-gray-300 hover:text-toxic-green transition-colors font-medium">FAQ</a>
+                    <a href="#cta" class="btn-primary px-6 py-2 rounded-lg text-sm uppercase tracking-wider">Start Scraping</a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button class="text-toxic-green focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex items-center relative overflow-hidden pt-20">
+        <!-- Radical Gradient Background -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-900/40 via-void-black to-void-black z-0"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Hero Content -->
+                <div class="space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-toxic-green/30 bg-green-900/20 text-toxic-green text-sm font-semibold tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-toxic-green animate-ping"></span>
+                        v2.0 Now Available on Apify
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl leading-tight text-white drop-shadow-lg">
+                        Programmatically Extract <span class="text-toxic-green neon-text">High-Intent</span> B2B Leads
+                    </h1>
+                    
+                    <p class="text-xl text-gray-300 max-w-lg leading-relaxed">
+                        Stop wasting engineering cycles on brittle custom scripts. Our Google Maps Lead Extractor Pro utilizes intelligent proxy rotation and browser fingerprinting to deliver structured, enriched datasets directly to your CRM.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#cta" class="btn-primary px-8 py-4 rounded-xl text-center text-lg">
+                            Start Extracting Leads
+                        </a>
+                        <a href="#" class="btn-secondary px-8 py-4 rounded-xl text-center text-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-book"></i> View API Documentation
+                        </a>
+                    </div>
+
+                    <!-- Trust Elements -->
+                    <div class="pt-6 flex items-center gap-6 text-sm text-gray-400 font-mono">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-toxic-green"></i> 99.9% Uptime
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-toxic-green"></i> No CAPTCHAs
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-toxic-green"></i> JSON/CSV Export
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image -->
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-toxic-green rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                    <img src="/images/hero_0.png" alt="Google Maps Scraper Interface" class="relative rounded-2xl border border-toxic-green/30 shadow-2xl w-full transform group-hover:scale-[1.01] transition-transform duration-500">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Problem Section -->
+    <section id="problem" class="py-24 bg-void-dark border-y border-toxic-green/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl text-white mb-6">Manual Data Collection is <span class="text-red-500 font-creepster">Killing</span> Your Scalability</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Building a reliable lead pipeline requires volume and accuracy, but traditional methods are fraught with technical bottlenecks and stale data.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Pain Point 1 -->
+                <div class="card-vibe p-8 rounded-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fa-solid fa-shield-virus text-6xl text-red-500"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 border border-red-500/30">
+                        <i class="fa-solid fa-shield-halved text-red-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl text-white mb-4">Anti-Scraping Mechanisms</h3>
+                    <p class="text-gray-400">Custom scripts frequently fail due to Google's sophisticated CAPTCHAs, IP bans, and DOM changes, resulting in broken pipelines.</p>
+                </div>
+
+                <!-- Pain Point 2 -->
+                <div class="card-vibe p-8 rounded-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fa-solid fa-database text-6xl text-red-500"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 border border-red-500/30">
+                        <i class="fa-solid fa-database text-red-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl text-white mb-4">Incomplete Contact Data</h3>
+                    <p class="text-gray-400">Google Maps listings often lack direct email addresses, forcing your sales team to manually cross-reference websites for contact info.</p>
+                </div>
+
+                <!-- Pain Point 3 -->
+                <div class="card-vibe p-8 rounded-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fa-solid fa-money-bill-wave-slash text-6xl text-red-500"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 border border-red-500/30">
+                        <i class="fa-solid fa-money-bill-1 text-red-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl text-white mb-4">Stale & Expensive Lists</h3>
+                    <p class="text-gray-400">Buying static lead databases yields low conversion rates due to outdated information, while manual copying is unscalable.</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-toxic-green text-lg font-mono border-t border-toxic-green/20 inline-block pt-4 px-8">
+                    <i class="fa-solid fa-arrow-down mr-2 animate-bounce"></i> 
+                    Eliminate these bottlenecks with our resilient scraper
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution" class="py-20 bg-void-black relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-green-900/20 to-void-black border border-toxic-green/20 rounded-3xl p-8 md:p-12 shadow-neon-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl mb-6">How Google Maps Lead Extractor Pro Solves This</h2>
+                        <p class="text-gray-300 mb-6 text-lg">
+                            We provide a headless browser solution running on the Apify cloud platform that navigates Google Maps like a real user. By combining geolocation search with secondary website crawling, we deliver a complete profile of every business target.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-network-wired text-toxic-green mt-1"></i>
+                                <div>
+                                    <strong class="text-white block">Intelligent Proxy Rotation</strong>
+                                    <span class="text-gray-400 text-sm">Built-in residential and datacenter proxies prevent IP blocking, ensuring high-volume extraction without interruption.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-layer-group text-toxic-green mt-1"></i>
+                                <div>
+                                    <strong class="text-white block">Dual-Layer Enrichment</strong>
+                                    <span class="text-gray-400 text-sm">The scraper extracts G-Maps data and visits the business website to parse emails and social links in a single run.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="relative h-64 md:h-full min-h-[300px] border border-toxic-green/30 bg-black/50 rounded-xl flex items-center justify-center overflow-hidden">
+                        <!-- Abstract Visual for Code/Automation -->
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')] opacity-30"></div>
+                        <div class="text-center z-10">
+                            <i class="fa-solid fa-robot text-8xl text-toxic-green opacity-80 drop-shadow-[0_0_15px_rgba(57,255,20,0.5)]"></i>
+                            <div class="mt-4 font-mono text-toxic-green text-sm typing-effect">Executing extraction protocol...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-void-black/40 border-t border-toxic-green/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl text-white mb-4">Enterprise-Grade Extraction Features</h2>
+                <p class="text-gray-400">Designed for developers, marketers, and data scientists.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Feature 1 -->
+                <div class="card-vibe rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden border-b border-toxic-green/20">
+                        <img src="/images/feature_1.png" alt="Email Enrichment" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fa-solid fa-envelope-open-text text-toxic-green"></i>
+                            <h3 class="text-xl text-white m-0 font-inter font-bold">Extended Contact Enrichment</h3>
+                        </div>
+                        <p class="text-toxic-green text-xs font-mono mb-3 uppercase tracking-wider">Emails & social profiles included</p>
+                        <p class="text-gray-400 text-sm mb-4 flex-1">Go beyond basic map data. The scraper automatically visits the official website to regex-match email addresses and social handles.</p>
+                        <span class="text-white text-xs border-l-2 border-toxic-green pl-2 italic">Benefit: Increase outreach conversion rates.</span>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="card-vibe rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden border-b border-toxic-green/20">
+                        <img src="/images/feature_2.png" alt="Geo Targeting" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fa-solid fa-map-location-dot text-toxic-green"></i>
+                            <h3 class="text-xl text-white m-0 font-inter font-bold">Precision Geo-Targeting</h3>
+                        </div>
+                        <p class="text-toxic-green text-xs font-mono mb-3 uppercase tracking-wider">Target by keyword or coordinates</p>
+                        <p class="text-gray-400 text-sm mb-4 flex-1">Define extraction scope with granular precision. Input search terms, specific GPS coordinates, or define custom polygon boundaries.</p>
+                        <span class="text-white text-xs border-l-2 border-toxic-green pl-2 italic">Benefit: Reduce noise, target exact territories.</span>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="card-vibe rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden border-b border-toxic-green/20">
+                        <img src="/images/feature_3.png" alt="Structured Data" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fa-solid fa-file-code text-toxic-green"></i>
+                            <h3 class="text-xl text-white m-0 font-inter font-bold">Structured Data Export</h3>
+                        </div>
+                        <p class="text-toxic-green text-xs font-mono mb-3 uppercase tracking-wider">JSON, CSV, Excel, XML</p>
+                        <p class="text-gray-400 text-sm mb-4 flex-1">Receive clean, normalized data ready for ingestion. Output is structured and ready for your API, Excel analysis, or legacy systems.</p>
+                        <span class="text-white text-xs border-l-2 border-toxic-green pl-2 italic">Benefit: Eliminate post-processing time.</span>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="card-vibe rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden border-b border-toxic-green/20">
+                        <img src="/images/feature_4.png" alt="Infinite Scroll" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fa-solid fa-list-ol text-toxic-green"></i>
+                            <h3 class="text-xl text-white m-0 font-inter font-bold">Infinite Scroll Handling</h3>
+                        </div>
+                        <p class="text-toxic-green text-xs font-mono mb-3 uppercase tracking-wider">Bypass pagination limits</p>
+                        <p class="text-gray-400 text-sm mb-4 flex-1">Our scraper programmatically handles infinite scrolling and pagination to retrieve the maximum available listings for any query.</p>
+                        <span class="text-white text-xs border-l-2 border-toxic-green pl-2 italic">Benefit: Maximize dataset size.</span>
+                    </div>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="card-vibe rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden border-b border-toxic-green/20">
+                        <img src="/images/feature_5.png" alt="Performance Tuning" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fa-solid fa-gauge-high text-toxic-green"></i>
+                            <h3 class="text-xl text-white m-0 font-inter font-bold">Performance Tuning</h3>
+                        </div>
+                        <p class="text-toxic-green text-xs font-mono mb-3 uppercase tracking-wider">Control concurrency & speed</p>
+                        <p class="text-gray-400 text-sm mb-4 flex-1">Adjust `maxConcurrency` settings to balance extraction speed against cost. Optimize for rapid prototyping or deep crawling.</p>
+                        <span class="text-white text-xs border-l-2 border-toxic-green pl-2 italic">Benefit: Full control over resource usage.</span>
+                    </div>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="card-vibe rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden border-b border-toxic-green/20">
+                        <img src="/images/feature_6.png" alt="Review Extraction" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fa-solid fa-star-half-stroke text-toxic-green"></i>
+                            <h3 class="text-xl text-white m-0 font-inter font-bold">Review & Rating Extraction</h3>
+                        </div>
+                        <p class="text-toxic-green text-xs font-mono mb-3 uppercase tracking-wider">Sentiment analysis ready</p>
+                        <p class="text-gray-400 text-sm mb-4 flex-1">Extract review counts, average ratings, and individual review text. Critical for reputation management and quality signaling.</p>
+                        <span class="text-white text-xs border-l-2 border-toxic-green pl-2 italic">Benefit: Filter based on reputation.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-24 bg-void-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl text-center text-white mb-16">Real-World Applications</h2>
+            
+            <div class="space-y-8">
+                <!-- Use Case 1 -->
+                <div class="card-vibe p-8 rounded-xl border-l-4 border-l-toxic-green">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="md:w-1/4">
+                            <div class="text-toxic-green text-4xl mb-2"><i class="fa-solid fa-bullhorn"></i></div>
+                            <h3 class="text-2xl text-white font-inter font-bold">Marketing Agencies</h3>
+                            <p class="text-sm text-gray-400 mt-2">Local SEO & Lead Gen</p>
+                        </div>
+                        <div class="md:w-3/4 space-y-3">
+                            <p class="text-gray-300"><strong class="text-white">Scenario:</strong> You need to find local businesses with low ratings or no websites to pitch SEO services.</p>
+                            <p class="text-gray-300"><strong class="text-white">Solution:</strong> Configure scraper to filter businesses by rating (< 3.5 stars) and missing website fields.</p>
+                            <div class="bg-black/50 p-3 rounded border border-toxic-green/20">
+                                <span class="text-toxic-green font-mono text-sm">> Outcome: Generated a list of 5,000+ high-probability prospects in under an hour.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Case 2 -->
+                <div class="card-vibe p-8 rounded-xl border-l-4 border-l-purple-500">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="md:w-1/4">
+                            <div class="text-purple-500 text-4xl mb-2"><i class="fa-solid fa-briefcase"></i></div>
+                            <h3 class="text-2xl text-white font-inter font-bold">Sales Operations</h3>
+                            <p class="text-sm text-gray-400 mt-2">Cold Outreach Lists</p>
+                        </div>
+                        <div class="md:w-3/4 space-y-3">
+                            <p class="text-gray-300"><strong class="text-white">Scenario:</strong> Your B2B sales team needs fresh contacts for a logistics software campaign targeting warehouses.</p>
+                            <p class="text-gray-300"><strong class="text-white">Solution:</strong> Input 'Warehouse' and 'Logistics' keywords combined with California geo-coordinates.</p>
+                            <div class="bg-black/50 p-3 rounded border border-purple-500/20">
+                                <span class="text-purple-400 font-mono text-sm">> Outcome: Filled the CRM with 2,000 verified leads including phones & emails.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Case 3 -->
+                <div class="card-vibe p-8 rounded-xl border-l-4 border-l-blue-500">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="md:w-1/4">
+                            <div class="text-blue-500 text-4xl mb-2"><i class="fa-solid fa-chart-pie"></i></div>
+                            <h3 class="text-2xl text-white font-inter font-bold">Data Analysts</h3>
+                            <p class="text-sm text-gray-400 mt-2">Competitor Mapping</p>
+                        </div>
+                        <div class="md:w-3/4 space-y-3">
+                            <p class="text-gray-300"><strong class="text-white">Scenario:</strong> A retail chain needs to analyze competitor density and review sentiment in a new target market.</p>
+                            <p class="text-gray-300"><strong class="text-white">Solution:</strong> Scrape all competitor locations within a defined polygon, including review text.</p>
+                            <div class="bg-black/50 p-3 rounded border border-blue-500/20">
+                                <span class="text-blue-400 font-mono text-sm">> Outcome: Delivered a comprehensive heat map and sentiment analysis report.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-24 bg-void-black border-y border-toxic-green/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl text-white mb-4">Start Extracting Data in Minutes</h2>
+                <p class="text-gray-400">No complex environment setup required. Run directly on cloud.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="relative p-6 border border-gray-800 rounded-xl hover:border-toxic-green transition-colors">
+                    <div class="text-6xl font-creepster text-gray-800 absolute -top-8 -left-4 z-0">1</div>
+                    <div class="relative z-10">
+                        <div class="text-toxic-green text-3xl mb-4"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+                        <h4 class="text-xl text-white font-bold mb-2 font-inter">Define Targets</h4>
+                        <p class="text-sm text-gray-400">Enter search terms (e.g., 'Dentists in London') or paste direct Google Maps URLs.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative p-6 border border-gray-800 rounded-xl hover:border-toxic-green transition-colors">
+                    <div class="text-6xl font-creepster text-gray-800 absolute -top-8 -left-4 z-0">2</div>
+                    <div class="relative z-10">
+                        <div class="text-toxic-green text-3xl mb-4"><i class="fa-solid fa-sliders"></i></div>
+                        <h4 class="text-xl text-white font-bold mb-2 font-inter">Configure Depth</h4>
+                        <p class="text-sm text-gray-400">Toggle 'Scrape Emails' to true and set your maximum item limit (e.g., 500).</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative p-6 border border-gray-800 rounded-xl hover:border-toxic-green transition-colors">
+                    <div class="text-6xl font-creepster text-gray-800 absolute -top-8 -left-4 z-0">3</div>
+                    <div class="relative z-10">
+                        <div class="text-toxic-green text-3xl mb-4"><i class="fa-solid fa-play"></i></div>
+                        <h4 class="text-xl text-white font-bold mb-2 font-inter">Execute Actor</h4>
+                        <p class="text-sm text-gray-400">Click 'Start'. The scraper rotates proxies and navigates results automatically.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative p-6 border border-gray-800 rounded-xl hover:border-toxic-green transition-colors">
+                    <div class="text-6xl font-creepster text-gray-800 absolute -top-8 -left-4 z-0">4</div>
+                    <div class="relative z-10">
+                        <div class="text-toxic-green text-3xl mb-4"><i class="fa-solid fa-download"></i></div>
+                        <h4 class="text-xl text-white font-bold mb-2 font-inter">Export Data</h4>
+                        <p class="text-sm text-gray-400">Download your verified dataset immediately in JSON, CSV, or Excel format.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section id="social-proof" class="py-24 bg-gradient-to-b from-void-dark to-void-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 text-center">
+                <div class="p-6">
+                    <div class="text-5xl font-bold text-toxic-green mb-2 neon-text">99.9%</div>
+                    <div class="text-xl text-white font-bold">Success Rate</div>
+                    <div class="text-sm text-gray-500">with built-in retry logic</div>
+                </div>
+                <div class="p-6 border-x border-gray-800">
+                    <div class="text-5xl font-bold text-toxic-green mb-2 neon-text">50k+</div>
+                    <div class="text-xl text-white font-bold">Leads/Hour</div>
+                    <div class="text-sm text-gray-500">processing capacity</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-5xl font-bold text-toxic-green mb-2 neon-text">1M+</div>
+                    <div class="text-xl text-white font-bold">Locations Scraped</div>
+                    <div class="text-sm text-gray-500">by satisfied users</div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-900/50 p-8 rounded-xl border border-gray-800 relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-gray-700 absolute top-4 left-4"></i>
+                    <p class="text-gray-300 italic mb-6 relative z-10 pt-4">"The email enrichment feature is a game changer. We used to pay for a separate tool to find emails after scraping Maps, but this Actor does it all in one pass. It saved us roughly 15 hours a week in data prep."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center text-white font-bold">MT</div>
+                        <div>
+                            <div class="text-white font-bold">Marcus Thorne</div>
+                            <div class="text-toxic-green text-sm">Lead Data Engineer at GrowthFlow</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900/50 p-8 rounded-xl border border-gray-800 relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-gray-700 absolute top-4 left-4"></i>
+                    <p class="text-gray-300 italic mb-6 relative z-10 pt-4">"Finally, a scraper that handles the new Google Maps layout without breaking. The JSON output is clean, and the API integration into our internal dashboard was seamless. Highly technical, highly effective."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center text-white font-bold">SJ</div>
+                        <div>
+                            <div class="text-white font-bold">Sarah Jenkins</div>
+                            <div class="text-toxic-green text-sm">CTO at LocalVerify</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center gap-8 mt-12 text-gray-600 text-sm font-mono uppercase tracking-widest">
+                <span>Hosted on Apify</span> • <span>GDPR Compliant Logic</span> • <span>Regular Maintenance</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-void-black">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl text-center text-white mb-12">Frequently Asked Questions</h2>
+            
+            <div class="space-y-4">
+                <details class="group bg-void-dark border border-gray-800 rounded-lg p-4 cursor-pointer open:border-toxic-green transition-colors">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white list-none">
+                        Does this scraper extract email addresses?
+                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-toxic-green"></i></span>
+                    </summary>
+                    <p class="text-gray-400 mt-4 leading-relaxed">
+                        Yes. While Google Maps itself rarely displays email addresses, this scraper features a 'Website Crawler' mode that visits the business's linked website to find and extract email addresses and social media links.
+                    </p>
+                </details>
+
+                <details class="group bg-void-dark border border-gray-800 rounded-lg p-4 cursor-pointer open:border-toxic-green transition-colors">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white list-none">
+                        How do I prevent getting blocked by Google?
+                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-toxic-green"></i></span>
+                    </summary>
+                    <p class="text-gray-400 mt-4 leading-relaxed">
+                        You don't need to worry about that. The Google Maps Lead Extractor Pro runs on the Apify platform, which utilizes a sophisticated pool of residential and datacenter proxies to mask requests and prevent IP bans.
+                    </p>
+                </details>
+
+                <details class="group bg-void-dark border border-gray-800 rounded-lg p-4 cursor-pointer open:border-toxic-green transition-colors">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white list-none">
+                        Can I integrate this with my existing software?
+                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-toxic-green"></i></span>
+                    </summary>
+                    <p class="text-gray-400 mt-4 leading-relaxed">
+                        Absolutely. You can trigger this scraper programmatically via the Apify API and use Webhooks to push the resulting dataset directly to your database, Zapier, or CRM as soon as the job finishes.
+                    </p>
+                </details>
+
+                <details class="group bg-void-dark border border-gray-800 rounded-lg p-4 cursor-pointer open:border-toxic-green transition-colors">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white list-none">
+                        What happens if the scraping stops or fails?
+                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-toxic-green"></i></span>
+                    </summary>
+                    <p class="text-gray-400 mt-4 leading-relaxed">
+                        The Actor includes built-in state persistence. If a run is interrupted, it can resurrect and continue exactly where it left off, ensuring you don't lose data or pay for duplicate operations.
+                    </p>
+                </details>
+
+                <details class="group bg-void-dark border border-gray-800 rounded-lg p-4 cursor-pointer open:border-toxic-green transition-colors">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white list-none">
+                        Is it possible to scrape specific geographic coordinates?
+                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-toxic-green"></i></span>
+                    </summary>
+                    <p class="text-gray-400 mt-4 leading-relaxed">
+                        Yes. You can provide specific latitude and longitude coordinates to center your search, which is ideal for scraping strictly defined local areas or neighborhoods.
+                    </p>
+                </details>
+
+                <details class="group bg-void-dark border border-gray-800 rounded-lg p-4 cursor-pointer open:border-toxic-green transition-colors">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white list-none">
+                        How much does it cost to run?
+                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-toxic-green"></i></span>
+                    </summary>
+                    <p class="text-gray-400 mt-4 leading-relaxed">
+                        Cost depends on the volume of data and compute units used on the Apify platform. Because this Actor is optimized for performance, it is highly cost-effective compared to buying pre-made lead lists.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section id="cta" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-900/30 via-void-black to-void-black z-0"></div>
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-toxic-green to-transparent opacity-50"></div>
+        <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-toxic-green to-transparent opacity-50"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-5xl md:text-6xl text-white mb-6 drop-shadow-lg">Ready to <span class="text-toxic-green neon-text">Automate</span> Your Lead Generation?</h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                Stop manual prospecting and start scaling. Get instant access to the world's largest local business database with the Google Maps Lead Extractor Pro.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button class="btn-primary px-10 py-5 rounded-lg text-xl font-bold uppercase tracking-wide">
+                    Try for Free on Apify
+                </button>
+                <button class="btn-secondary px-10 py-5 rounded-lg text-xl font-bold uppercase tracking-wide">
+                    View Input Parameters
+                </button>
+            </div>
+            
+            <p class="mt-8 text-gray-500 text-sm">Pay-as-you-go pricing • No long-term contracts</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-void-black border-t border-gray-900 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-spider text-toxic-green text-xl"></i>
+                        <span class="font-creepster text-xl text-white tracking-widest">G-MAPS EXTRACTOR</span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Enterprise-grade scraping infrastructure for high-velocity sales and marketing teams.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 font-inter">Product</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-toxic-green">Features</a></li>
+                        <li><a href="#" class="hover:text-toxic-green">Pricing</a></li>
+                        <li><a href="#" class="hover:text-toxic-green">API Docs</a></li>
+                        <li><a href="#" class="hover:text-toxic-green">Changelog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 font-inter">Resources</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-toxic-green">Blog</a></li>
+                        <li><a href="#" class="hover:text-toxic-green">Case Studies</a></li>
+                        <li><a href="#" class="hover:text-toxic-green">Community</a></li>
+                        <li><a href="#" class="hover:text-toxic-green">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 font-inter">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-toxic-green">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-toxic-green">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-toxic-green">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-gray-600 text-sm">
+                    &copy; 2023 Google Maps Lead Extractor Pro. All rights reserved.
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-toxic-green transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-toxic-green transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-toxic-green transition-colors"><i class="fa-brands fa-discord text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- VibeCode Badge -->
+        <a href="https://vibecode-pager.vercel.app" class="fixed bottom-4 right-4 bg-black/80 border border-toxic-green/30 text-xs text-gray-400 px-3 py-1 rounded-full backdrop-blur hover:text-toxic-green hover:border-toxic-green transition-all z-50">
+            Made with VibeCode Pager
+        </a>
+    </footer>
+
+    <!-- Mobile Nav Script -->
+    <script>
+        const btn = document.querySelector('button.text-toxic-green');
+        const menu = document.querySelector('.md\\:flex');
+        
+        // Simple toggle for mobile view (expanding the hidden md:flex)
+        // In a real production build, we'd toggle a separate mobile menu container
+        btn.addEventListener('click', () => {
+            alert('Mobile menu toggle placeholder');
+        });
+    </script>
+
+<!-- VibeCode Pager Watermark -->
+<a href="https://vibecode-pager.com" target="_blank" rel="noopener" class="vibecode-badge">
+  ⚡ Made with VibeCode Pager
+</a>
+<script>
+// VibeCode Pager - Landing Page JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('section').forEach(section => {
+    observer.observe(section);
+  });
+
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+
+});
+</script>
+</body>
+</html>
